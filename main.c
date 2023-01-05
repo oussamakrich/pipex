@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:50 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 18:33:59 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/05 19:55:15 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ int	main(int ac, char **av, char **env)
 	}
 	pipe(fd);
 	id = fork();
-	// if (id != 0)
-	// 	id2 = fork();
 	if (id == 0)
 	{
 		child_proccess1(av, env, fd, p_indice);
 	}
 	if (id != 0)
+		id2 = fork();
+	if (id2 != 0)
 	{
 		child_proccess2(av, env, fd, p_indice);
 	}
