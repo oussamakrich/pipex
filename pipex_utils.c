@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:13:01 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 17:14:18 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:11:30 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ char	*get_path(char *cmd, char *path)
 			break ;
 		i++;
 	}
+	if (all_path[i] == NULL)
+		return (free_words(all_path), NULL);
 	res = ft_duplicate(all_path[i]);
 	free_words(all_path);
 	return (res);
