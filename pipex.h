@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:40 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 17:13:59 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:48:06 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,9 @@ char	*ft_strcpy(char *dst, char *src);
 
 int	ft_strstr(char *str, char *to_find);
 char	*get_path(char *cmd, char *path);
+
+
+void	get_in_out_file(int *in, int *out, char *file_in, char *file_out);
+int	get_index_of_path(char **env);
 
 #endif

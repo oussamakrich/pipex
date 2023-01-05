@@ -6,31 +6,11 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:50 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 21:41:38 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:48:20 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	get_index_of_path(char **env)
-{
-	int	p_index;
-
-	p_index = 0;
-	while(env[p_index])
-	{
-		if (ft_strstr(env[p_index], "PATH"))
-			break ;
-		p_index++;
-	}
-	if (env[p_index] == NULL)
-	{
-		//TODO: print error
-		exit(1);
-	}
-	
-	return (p_index);
-}
 
 void	child_proccess1(char **av, char **env, int *fd, int infile)
 {
@@ -86,18 +66,6 @@ void	child_proccess2(char **av, char **env, int *fd, int outfile)
 	}
 }
 
-void	get_in_out_file(int *in, int *out, char *file_in, char *file_out)
-{	
-	*in = open(file_in, O_RDWR);
-	*out = open(file_out, O_CREAT | O_RDWR, 0777);
-	if (*in == -1 || *out == -1)
-	{
-		perror("error ");
-		exit (1);
-	}
-}
-
-
 int	main(int ac, char **av, char **env)
 {
 	int		fd[2];
@@ -105,7 +73,6 @@ int	main(int ac, char **av, char **env)
 	int		id2;
 	int		outfile;
 	int		infile;
-	int		p_index;
 
 	//FIX: check if env == NULL || path is not in env
 	if (ac != 5 || env == NULL)
