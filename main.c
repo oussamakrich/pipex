@@ -6,84 +6,100 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:50 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 21:48:20 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/07 13:32:59 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	child_proccess1(char **av, char **env, int *fd, int infile)
+int	child_proccess1(char **av, char **env, int	*fd, int p_index)
 {
-	char	**arg;
 	char	*path;
-	int		p_index;
+	char	**arg;
+	int		infile;
 
-	close(fd[0]);
-	dup2(fd[1], 1);
+	infile = open(av[1], O_RDWR);
+	if (infile == -1)
+		return (perror(av[1]), 1);
+	close (fd[0]);
+	if (dup2(fd[1], 1) == -1)
+		return (perror("dup2 "), close(fd[1]), close(infile), 1);
 	close(fd[1]);
-	dup2(infile, 0);
+	if (dup2(infile, 0) == -1)
+		return (perror("dup "), close(infile), 1);
 	close(infile);
-	p_index = get_index_of_path(env);
 	arg = ft_split(av[2], ' ');
+	if (arg == NULL)
+		return (1);
+	execve(arg[0], arg, env);
 	path = get_path(arg[0], env[p_index]);
 	if (path == NULL)
-	{
-		write(2, "command not found : ", 20);
-		write(2, arg[0], sp_strlen(arg[0]));
-		exit (1);
-	}
-	execve(path, arg, env);
-	{
-		perror("execve ");
-		exit(1);
-	}
+		return (free_words(arg), 1);
+	if (execve(path, arg, env) == -1)
+		return (perror("execve "), free_words(arg), free(path), 1);
+	return (0);
 }
 
-void	child_proccess2(char **av, char **env, int *fd, int outfile)
+int	child_proccess2(char **av, char **env, int *fd, int p_index)
 {
-	char	**arg;
 	char	*path;
-	int		p_index;
+	char	**arg;
+	int		outfile;
 
-	close(fd[1]);
-	dup2(fd[0], 0);
+	outfile = open(av[4], O_CREAT | O_TRUNC | O_RDWR , 777);
+	if (outfile == -1)
+		return (perror(av[4]), 1);
+	close (fd[1]);
+	if (dup2(fd[0], 0) == -1)
+		return (perror("dup2 "), close(fd[0]), close(outfile), 1);
 	close(fd[0]);
-	dup2(outfile, 1);
+	if (dup2(outfile, 1) == -1)
+		return (perror("dup2 "), close(outfile), 1);
 	close(outfile);
-	p_index = get_index_of_path(env);
-	arg = ft_split(av[3] , ' ');
+	arg = ft_split(av[3], ' ');
+	if (arg == NULL)
+		return (1);
+	execve(arg[0], arg, env);	
 	path = get_path(arg[0], env[p_index]);
 	if (path == NULL)
-	{
-		write(2, "command not found : ", 20);
-		write(2, arg[0], sp_strlen(arg[0]));
-		exit (1);
-	}
+		return (free_words(arg), 1);
 	if (execve(path, arg, env) == -1)
-	{
-		perror("execve ");
-		exit(1);
-	}
+		return (perror("execve "), free_words(arg), free(path), 1);
+	return (0);
+}
+
+int	ft_pipex(char **av, char **env, int p_index)
+{
+	int	child1;
+	int	child2;
+	int	fd[2];
+
+	if (pipe(fd) == -1)
+		return (perror("pipe "), 1);
+	child1 = fork();
+	if (child1 == -1)
+		return (perror("fork "), 1);
+	if (child1 == 0)
+		child_proccess1(av, env, fd, p_index);
+	child2 = fork();
+	if (child1 == -1)
+		return (perror("fork "), 1);
+	if (child2 != 0)
+		child_proccess2(av, env, fd, p_index);
+	wait(NULL);
+	wait(NULL);
+	close(fd[0]);
+	close(fd[1]);
+	return (0);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	int		fd[2];
-	int		id;
-	int		id2;
-	int		outfile;
-	int		infile;
+	int	p_index;
 
-	//FIX: check if env == NULL || path is not in env
-	if (ac != 5 || env == NULL)
-		return (0);
-	get_in_out_file(&infile, &outfile, av[1], av[4]);
-	pipe(fd);
-	id = fork();
-	if (id == 0)
-		child_proccess1(av, env, fd, infile);
-	id2 = fork();
-	if (id2 != 0)
-		child_proccess2(av, env, fd, outfile);
-	wait(NULL);
+	p_index = get_index_of_path(env);
+	if (p_index == -1)
+		return (write(2, "path not found\n", 15), 1);
+	ft_pipex(av, env, p_index);
+	return (0);
 }

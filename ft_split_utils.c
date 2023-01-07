@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:11:09 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 17:03:19 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/07 12:03:23 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_strcpy(char *dst, char *src)
 	return (dst);
 }
 
-char	*ft_strnjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*join;
 	int		len;
@@ -62,11 +62,12 @@ char	*ft_strnjoin(char *s1, char *s2)
 
 	len = sp_strlen(s1);
 	len2 = sp_strlen(s2);
-	join = malloc(sizeof(char) * (len + len2 + 1));
+	join = malloc(sizeof(char) * (len + len2 + 2));
 	if (join == NULL)
 		return (NULL);
 	ft_strcpy(join, s1);
-	ft_strcpy(join + len, s2);
-	free (s1);
+	join[len] = '/';
+	ft_strcpy(join + len + 1, s2);
 	return (join);
 }
+

@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:40 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 21:48:06 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/06 17:34:37 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		sp_strlcpy(char *dst, char *src, int dstsize);
 char	**ft_split(char *s, char c);
 void	free_words(char **words);
 
-char	*ft_strnjoin(char *s1, char *s2);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strcpy(char *dst, char *src);
 
 
