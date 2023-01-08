@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:40 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/07 16:18:06 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/08 12:53:03 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,10 @@ char	*get_path(char *cmd, char *path);
 
 void	get_in_out_file(int *in, int *out, char *file_in, char *file_out);
 int	get_index_of_path(char **env);
+
+//--------------------------------------
+
+int	first_cmd(char *av, char **env, int p_index, int *fd,char **argv);
+int	last_cmd(char *av, char **env, int p_index, int *fd, char *out);
 
 #endif
