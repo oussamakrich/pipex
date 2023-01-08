@@ -6,11 +6,12 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:13:01 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/07 13:33:51 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/07 19:21:55 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <unistd.h>
 
 int	ft_strstr(char *str, char *to_find)
 {
@@ -44,6 +45,7 @@ char	*get_path(char *cmd, char *path)
 	char	**all_path;
 	int		i;
 
+	// FIX: if access cmd
 	path = path + 5;
 	all_path = ft_split(path, ':');
 	if (all_path == NULL)
@@ -61,4 +63,22 @@ char	*get_path(char *cmd, char *path)
 	}
 	perror(cmd);
 	return (free_words(all_path), NULL);
+}
+
+
+void	check_args(char **args)
+{
+	int	i;
+
+	i = 1;
+	while (args[i])
+	{
+		args[i] = skip(args[i], ' ');
+		if (args[i][0] == '\0')
+		{
+			write(2, "Invalid arguments\n", 18);
+			exit(1);
+		}
+		i++;		
+	}
 }
