@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:40 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/10 17:46:58 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/11 11:46:35 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ char	*get_next_line(int fd);
 ssize_t	get_strlen(char *str);
 char	*get_strncpy(char *dst, char *src, ssize_t dstsize);
 
-int	first_cmd_heredoc(char **av, char **env, int *fd);
+int	first_cmd_heredoc(char *cmd, char **env, int *fd);
+int	read_from_heredoc(char *limiter, int fd);
+
+void	my_pipe(char *cmd, char **env, int *fd);
+
+int	ft_heredoc(char **av, char **env);
 
 #endif

@@ -6,16 +6,37 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:40:01 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/10 19:24:13 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/11 11:43:05 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <sys/fcntl.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
-int	read_from_heredoc(char **av, int fd)
+int	get_doc(void)
+{
+	int	fd;
+
+	fd = open(".here_doc", O_CREAT | O_WRONLY | O_APPEND, 0666);
+	if (fd == -1)
+		return (exit(1), 1);
+	return (fd);
+}
+
+int	ft_heredoc(char **av, char **env)
+{
+	int	doc;
+	int	fd[2];
+	int	id;
+
+	doc = get_doc();
+	read_from_heredoc(av[0], doc);
+	if (pipe(fd) == -1)
+		return (perror("pipe "), exit (1), 1);
+	first_cmd_heredoc(av[1], env, fd);
+	return (0);	
+}
+
+int	read_from_heredoc(char *limiter, int fd)
 {
 	char	*line;
 
@@ -27,7 +48,7 @@ int	read_from_heredoc(char **av, int fd)
 		line = get_next_line(0);
 		if (line == NULL)
 			return (unlink(".here_doc"), exit (1), 1);
-		if (ft_strstr(line, av[2]))
+		if (ft_strstr(line, limiter))
 		{
 			free(line);
 			break ;
@@ -38,27 +59,7 @@ int	read_from_heredoc(char **av, int fd)
 	return (0);
 }
 
-int	here_doc(char **av)
-{
-	int	doc;
-	int	id;
-
-	doc = open(".here_doc", O_CREAT | O_RDWR | O_APPEND, 0777);
-	if (doc == -1)
-		return (exit(1), 1);
-	id = fork();
-	if (id == -1)
-		return (perror("fork "), close(doc), unlink(".here_doc"), exit(1), 1);
-	if (id == 0)
-	{
-		read_from_heredoc(av, doc);
-		exit (0);
-	}
-	wait(NULL);
-	return (close(doc), 0);
-}
-
-int	first_cmd_heredoc(char **av, char **env, int *fd)
+int	first_cmd_heredoc(char *cmd, char **env, int *fd)
 {
 	int		doc;
 	int		id;
@@ -73,7 +74,7 @@ int	first_cmd_heredoc(char **av, char **env, int *fd)
 		dup2(doc, 0);			
 		close(doc);
 		p_index = get_index_of_path(env);
-		nrml_cmd(av[3], env, fd, p_index);
+		nrml_cmd(cmd, env, fd, p_index);
 	}
 	wait(NULL);
 	close_fd_parent(fd);		
