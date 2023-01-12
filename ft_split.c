@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:01 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/05 14:16:37 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/11 19:50:15 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_str(char *s, char c, char **strs)
 	int		i;
 
 	i = 0;
-	len = sp_strlen(s);
+	len = ft_strlen(s);
 	while (len)
 	{
 		if (s[i] == c)
@@ -64,7 +64,7 @@ char	*get_str(char *s, char c, char **strs)
 		free_words(strs);
 		return (NULL);
 	}
-	sp_strlcpy(str, s, i + 1);
+	ft_strncpy(str, s, i);
 	return (str);
 }
 

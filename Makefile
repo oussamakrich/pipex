@@ -6,7 +6,7 @@
 #    By: okrich <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/09 12:15:29 by okrich            #+#    #+#              #
-#    Updated: 2023/01/10 18:07:19 by okrich           ###   ########.fr        #
+#    Updated: 2023/01/11 19:27:58 by okrich           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,7 @@ NAME_BNS = pipexbonus
 SRC = main pipex_utils ft_split ft_split_utils
 
 SRC_BONUS = pipex_bonus utils_bonus ft_split ft_split_utils\
-			pipex_utils get_next_line get_next_line_utils\
-			utils_heredoc
+			pipex_utils get_next_line utils_heredoc ft_itoa
 
 OBJ = $(addsuffix .o, $(SRC))
 

@@ -6,11 +6,32 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 10:22:01 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/10 12:43:20 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/11 19:52:06 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <stdio.h>
+
+char	*ft_strndup(char *s1, ssize_t n, ssize_t *fail)
+{
+	int		len;
+	char	*dst;
+
+	len = ft_strlen(s1);
+	if (s1 == NULL)
+		return (NULL);
+	dst = malloc(sizeof(char) * (len + 1));
+	if (dst == NULL)
+	{
+		*fail = -1;
+		return (NULL);
+	}
+	if (n == -1)
+		n = len;
+	ft_strncpy(dst, s1, n);
+	return (dst);
+}
 
 ssize_t	check_newline(char *reader)
 {
@@ -39,7 +60,7 @@ char	*get_resteofline(ssize_t n, char **rest)
 	line = ft_strndup(*rest, n, &nl);
 	if (line == NULL)
 		return (NULL);
-	if (n < get_strlen(*rest))
+	if (n < ft_strlen(*rest))
 	{
 		tmp = ft_strndup(*rest + n, -1, &nl);
 		free(*rest);

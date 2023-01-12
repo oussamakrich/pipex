@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:13:01 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/10 18:59:40 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/11 18:46:37 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@ int	ft_strstr(char *str, char *to_find)
 	return (0);
 }
 
+int	ft_strcmp(char *s1, char *s2, char c)
+{
+	while (*s1 != '\0' && *s2 != '\0')
+	{
+		if (*s1 != *s2)
+			return (*s1 - *s2);
+		s1++;
+		s2++;
+	}
+	if (c == '\n' && *s1 == '\n')
+		return (0);
+	return (*s1 - *s2);
+}
+
 int	get_index_of_path(char **env)
 {
 	int	p_index;
@@ -35,7 +49,7 @@ int	get_index_of_path(char **env)
 			return (p_index);
 		p_index++;
 	}
-	return (-1);
+	return (write(2, "path not found\n", 15), exit(1), 1);
 }
 
 char	*get_path(char *cmd, char *path)
@@ -51,7 +65,7 @@ char	*get_path(char *cmd, char *path)
 	i = 0;
 	while (all_path[i])
 	{
-		res = ft_strjoin(all_path[i], cmd);
+		res = ft_strjoin(all_path[i], cmd, '/');
 		if (res == NULL)
 			return (free_words(all_path), NULL);
 		if (access(res, F_OK) == 0)

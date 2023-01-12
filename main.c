@@ -6,7 +6,7 @@
 /*   By: okrich <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:08:50 by okrich            #+#    #+#             */
-/*   Updated: 2023/01/10 19:03:56 by okrich           ###   ########.fr       */
+/*   Updated: 2023/01/11 18:40:49 by okrich           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ int	child_proccess1(char **av, char **env, int	*fd, int p_index)
 	path = get_path(arg[0], env[p_index]);
 	if (path == NULL)
 		return (free_words(arg), 1);
-	if (execve(path, arg, env) == -1)
-		return (perror("execve "), free_words(arg), free(path), 1);
-	return (0);
+	execve(path, arg, env);
+	return (perror("execve "), free_words(arg), free(path), 1);
 }
 
 int	child_proccess2(char **av, char **env, int *fd, int p_index)
@@ -55,13 +54,12 @@ int	child_proccess2(char **av, char **env, int *fd, int p_index)
 	arg = ft_split(av[3], ' ');
 	if (arg == NULL)
 		return (1);
-	execve(arg[0], arg, env);	
+	execve(arg[0], arg, env);
 	path = get_path(arg[0], env[p_index]);
 	if (path == NULL)
 		return (free_words(arg), exit(127), 1);
-	if (execve(path, arg, env) == -1)
-		return (perror("execve "), free_words(arg), free(path), exit(126), 1);
-	return (0);
+	execve(path, arg, env);
+	return (perror("execve "), free_words(arg), free(path), exit(126), 1);
 }
 
 int	ft_pipex(char **av, char **env, int p_index)
